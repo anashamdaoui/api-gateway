@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package softphone;
+option go_package = "./proto;proto";
+
+// The softphone control service definition.
+service SoftPhoneService {
+  // Registers a phone to the platform
+  rpc RegisterPhone(RegisterPhoneRequest) returns (RegisterPhoneResponse);
+  // Lists all registered phones based on filter criteria
+  rpc ListPhones(ListPhonesRequest) returns (PhoneListResponse);
+  // Initiates a call from a registered phone
+  rpc Call(CallRequest) returns (ActionResponse);
+  // Answers an incoming call
+  rpc AnswerCall(CallActionRequest) returns (ActionResponse);
+  // Hangs up an active or incoming call
+  rpc HangupCall(CallActionRequest) returns (ActionResponse);
+  // Puts an active call on hold
+  rpc HoldCall(CallActionRequest) returns (ActionResponse);
+  // Resumes a call that was put on hold
+  rpc ResumeCall(CallActionRequest) returns (ActionResponse);
+  // Unregisters a phone from the platform
+  rpc UnregisterPhone(UnregisterPhoneRequest) returns (ActionResponse);
+}
+
+// Request and Response Messages
+
+// Registering a phone
+message RegisterPhoneRequest {
+  string sipId = 1;
+  string password = 2;
+  string platformUri = 3;
+}
+
+message RegisterPhoneResponse {
+  string message = 1;
+  string phoneId = 2;
+}
+
+// Listing phones
+message ListPhonesRequest {
+  string sipId = 1;
+  string tenantId = 2;
+  string tenantName = 3;
+  string telephonicState = 4;
+}
+
+message PhoneListResponse {
+  repeated Phone phones = 1;
+  int32 total = 2;
+  int32 page = 3;
+  int32 pageSize = 4;
+}
+
+message Phone {
+  string sipId = 1;
+  string platformUri = 2;
+  string tenantName = 3;
+  string tenantId = 4;
+  string telephonicState = 5;
+}
+
+// Call Control
+message CallRequest {
+  string sipId = 1;
+  string remoteNumber = 2;
+}
+
+message CallActionRequest {
+  string callId = 1;
+}
+
+message ActionResponse {
+  string message = 1;
+}
+
+// Unregister a phone
+message UnregisterPhoneRequest {
+  string sipId = 1;
+}

@@ -1,0 +1,6 @@
+{
+	"log_level": "DEBUG",
+	"server_port": "8080",
+	"registry_url": "http://localhost:9080"
+}
+  
